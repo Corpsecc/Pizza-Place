@@ -1,5 +1,6 @@
 local Players = game:GetService("Players")
 local VirtualUser = game:GetService("VirtualUser")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local LocalPlayer = Players.LocalPlayer
 
 -- Anti-AFK
@@ -15,6 +16,16 @@ task.spawn(function()
             setfpscap(10)
         end)
         task.wait(5)
+    end
+end)
+
+-- Auto Cashier
+task.spawn(function()
+    while true do
+        pcall(function()
+            ReplicatedStorage.PlayerChannel:FireServer("ChangeJob", "Cashier")
+        end)
+        task.wait(1)
     end
 end)
 
@@ -71,6 +82,23 @@ task.spawn(function()
                     job.Position = Vector3.new(job.Position.X, -3, job.Position.Z)
                 end
             end
+        end
+    end)
+end)
+
+-- Teleport (after 6 seconds)
+task.spawn(function()
+    task.wait(6)
+    pcall(function()
+        local char = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+        local hrp = char:WaitForChild("HumanoidRootPart", 10)
+        if hrp then
+            hrp.CFrame = CFrame.new(
+                73.5040283, 6.19791603, 88.2256851,
+                -0.407220066, 2.56218353e-08, 0.913330078,
+                1.73917591e-08, 1, -2.0298863e-08,
+                -0.913330078, 7.61831309e-09, -0.407220066
+            )
         end
     end)
 end)
